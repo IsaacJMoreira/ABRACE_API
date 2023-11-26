@@ -7,7 +7,6 @@ export const PetSchema = new mongoose.Schema({
     age: {type: Number, min: 1, max: 100, required: true},
     accureteAge: {type: Boolean, default: true},
     furColor: {type: String, min: 3, max: 30, required: true},
-    furType: {type: String, min: 3, max:30, required: true},
     furLength: {type: String, min: 1, max: 30, required: true},
     sex: {type: String, enum: ["M", "F"], required: true},
     description: {type: String, min: 30, max: 500, required: true},

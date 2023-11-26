@@ -7,13 +7,12 @@ import { Model } from 'mongoose';
 export class PetsService {
   constructor(@InjectModel('Pet') private readonly petModel: Model<Pet>) {}
 
-  async insertPet(
+  async createPet(
     name: string,
     species: string,
     age: number,
     accureteAge: boolean,
     furColor: string,
-    furType: string,
     furLength: string,
     sex: string,
     description: string,
@@ -28,7 +27,6 @@ export class PetsService {
       age,
       accureteAge,
       furColor,
-      furType,
       furLength,
       sex,
       description,
@@ -41,7 +39,7 @@ export class PetsService {
     const response = await newPet.save();
     console.log(response);
 
-    return response.id as string;
+    return response._id as string;
   }
 
   async getAllPets() {
@@ -69,7 +67,6 @@ export class PetsService {
     age: number,
     accureteAge: boolean,
     furColor: string,
-    furType: string,
     furLength: string,
     sex: string,
     description: string,
@@ -88,7 +85,6 @@ export class PetsService {
           age,
           accureteAge,
           furColor,
-          furType,
           furLength,
           sex,
           description,

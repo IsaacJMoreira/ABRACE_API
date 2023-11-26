@@ -12,7 +12,6 @@ export class PetsController {
     @Body('age') petAge: number,
     @Body('accurateAge') accurateAge: boolean,
     @Body('furColor') petFurColor: string,
-    @Body('furType') petFurType: string,
     @Body('furLength') petFurLength: string,
     @Body('sex') petSex: string,
     @Body('description') petDescription: string,
@@ -21,13 +20,12 @@ export class PetsController {
     @Body('sponsorships') petSponsorships: [string],
     @Body('adoptionRequests') petAdoptionRequests: [string],
   ) {
-    const generatedID = await this.petService.insertPet(
+    const generatedID = await this.petService.createPet(
       petName,
       petSpecies,
       petAge,
       accurateAge,
       petFurColor,
-      petFurType,
       petFurLength,
       petSex,
       petDescription,
@@ -60,7 +58,6 @@ export class PetsController {
     @Body('age') petAge: number,
     @Body('accurateAge') accurateAge: boolean,
     @Body('furColor') petFurColor: string,
-    @Body('furType') petFurType: string,
     @Body('furLength') petFurLength: string,
     @Body('sex') petSex: string,
     @Body('description') petDescription: string,
@@ -76,7 +73,6 @@ export class PetsController {
       petAge,
       accurateAge,
       petFurColor,
-      petFurType,
       petFurLength,
       petSex,
       petDescription,
