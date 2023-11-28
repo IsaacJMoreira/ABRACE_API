@@ -13,7 +13,7 @@ import { PetsService } from './pets.service';
 
 @Controller('pets') //apiURL/pets
 export class PetsController {
-  constructor(private readonly petService: PetsService) {}
+  constructor(private readonly petsService: PetsService) {}
 
   @Post()
   async addPet(
@@ -32,7 +32,7 @@ export class PetsController {
   ) {
     let newPet;
     try {
-      newPet = await this.petService.createPet(
+      newPet = await this.petsService.createPet(
         petName,
         petSpecies,
         petAge,
@@ -59,7 +59,7 @@ export class PetsController {
 
   @Get()
   async getAllPets() {
-    const response = await this.petService.getAllPets();
+    const response = await this.petsService.getAllPets();
     return response;
   }
 
@@ -67,7 +67,7 @@ export class PetsController {
   async getOnePet(@Param('id') id: string) {
     let onePet;
     try {
-      onePet = await this.petService.getOne(id);
+      onePet = await this.petsService.getOne(id);
     } catch (error) {
       throw new InternalServerErrorException(
         'Se cagou ao tentar pegar esse pet especifico ',
@@ -95,7 +95,7 @@ export class PetsController {
     let updatedPet;
 
     try {
-      updatedPet = await this.petService.updatePet(
+      updatedPet = await this.petsService.updatePet(
         id,
         petName,
         petSpecies,
@@ -111,23 +111,25 @@ export class PetsController {
         petAdoptionRequests,
       );
     } catch (error) {
-      throw new InternalServerErrorException("Deu bosta oa tentar fzr update nedde pet");
+      throw new InternalServerErrorException(
+        'Deu bosta oa tentar fzr update nedde pet',
+      );
     }
-    if(!updatedPet) throw new ForbiddenException("Já tem um pet com esse nome");
+    if (!updatedPet)
+      throw new ForbiddenException('Já tem um pet com esse nome');
     return updatedPet;
   }
 
-  @Delete(":id")
-  async deletePetByID(@Param("id") petID: string){
+  @Delete(':id')
+  async deletePetByID(@Param('id') petID: string) {
     let deletedPet;
     try {
-      deletedPet = await this.petService.delOneById(petID);
+      deletedPet = await this.petsService.delOneById(petID);
     } catch (error) {
-      throw new InternalServerErrorException("Se cagou ao deletar esse pet");
+      throw new InternalServerErrorException('Se cagou ao deletar esse pet');
     }
-    if(!deletedPet) throw new ForbiddenException("não posso deletar esse bixo sarnendo");
+    if (!deletedPet)
+      throw new ForbiddenException('não posso deletar esse bixo sarnendo');
     return deletedPet;
   }
-
-
 }
