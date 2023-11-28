@@ -1,8 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Pet } from './pet.model';
 import { Model } from 'mongoose';
-import { DefaultDeserializer } from 'v8';
 
 @Injectable()
 export class PetsService {
@@ -41,13 +40,13 @@ export class PetsService {
     });
 
     const response = await newPet.save();
-    return response as Pet | boolean;
+    return response as Pet;
   }
 
   async getAllPets() {
     const response = await this.petModel.find().exec();
     if (response.length < 1) return false;
-    return response as Pet[] | boolean;
+    return response as Pet[];
   }
 
   async getOne(id: string) {
@@ -56,7 +55,7 @@ export class PetsService {
     response = await this.petModel.findById(id).exec();
     if (!response) return false;
 
-    return response as Pet | boolean;
+    return response as Pet;
   }
 
   async updatePet(
@@ -95,12 +94,12 @@ export class PetsService {
       },{new: true}
     );
 
-    return response as Pet | boolean;
+    return response as Pet;
   }
 
   async delOneById(id: string){
     const deletedPet = await this.petModel.deleteOne({_id: id});
     if(!deletedPet.deletedCount) return false;
-    return deletedPet as object | boolean;
+    return deletedPet as object;
   }
 }
