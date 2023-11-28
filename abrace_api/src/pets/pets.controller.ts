@@ -1,4 +1,14 @@
-import { Controller, Post, Body, Get, Param, Put } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Put,
+  InternalServerErrorException,
+  ForbiddenException,
+  Delete,
+} from '@nestjs/common';
 import { PetsService } from './pets.service';
 
 @Controller('pets') //apiURL/pets
@@ -20,22 +30,31 @@ export class PetsController {
     @Body('sponsorships') petSponsorships: [string],
     @Body('adoptionRequests') petAdoptionRequests: [string],
   ) {
-    const generatedID = await this.petService.createPet(
-      petName,
-      petSpecies,
-      petAge,
-      accurateAge,
-      petFurColor,
-      petFurLength,
-      petSex,
-      petDescription,
-      petImgURL,
-      petImgALT,
-      petSponsorships,
-      petAdoptionRequests,
-    );
+    let newPet;
+    try {
+      newPet = await this.petService.createPet(
+        petName,
+        petSpecies,
+        petAge,
+        accurateAge,
+        petFurColor,
+        petFurLength,
+        petSex,
+        petDescription,
+        petImgURL,
+        petImgALT,
+        petSponsorships,
+        petAdoptionRequests,
+      );
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Se cagou ao tentar criar esse pet',
+      );
+    }
 
-    return { ID: generatedID };
+    if (!newPet) throw new ForbiddenException('Já tem um pet com esse nome');
+
+    return newPet;
   }
 
   @Get()
@@ -46,8 +65,15 @@ export class PetsController {
 
   @Get(':id')
   async getOnePet(@Param('id') id: string) {
-    const response = await this.petService.getOne(id);
-    return response;
+    let onePet;
+    try {
+      onePet = await this.petService.getOne(id);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Se cagou ao tentar pegar esse pet especifico ',
+      );
+    }
+    if (!onePet) return onePet;
   }
 
   @Put(':id')
@@ -66,21 +92,42 @@ export class PetsController {
     @Body('sponsorships') petSponsorships: [string],
     @Body('adoptionRequests') petAdoptionRequests: [string],
   ) {
-    const response = await this.petService.updatePet(
-      id,
-      petName,
-      petSpecies,
-      petAge,
-      accurateAge,
-      petFurColor,
-      petFurLength,
-      petSex,
-      petDescription,
-      petImgURL,
-      petImgALT,
-      petSponsorships,
-      petAdoptionRequests,
-    );
-    return response;
+    let updatedPet;
+
+    try {
+      updatedPet = await this.petService.updatePet(
+        id,
+        petName,
+        petSpecies,
+        petAge,
+        accurateAge,
+        petFurColor,
+        petFurLength,
+        petSex,
+        petDescription,
+        petImgURL,
+        petImgALT,
+        petSponsorships,
+        petAdoptionRequests,
+      );
+    } catch (error) {
+      throw new InternalServerErrorException("Deu bosta oa tentar fzr update nedde pet");
+    }
+    if(!updatedPet) throw new ForbiddenException("Já tem um pet com esse nome");
+    return updatedPet;
   }
+
+  @Delete(":id")
+  async deletePetByID(@Param("id") petID: string){
+    let deletedPet;
+    try {
+      deletedPet = await this.petService.delOneById(petID);
+    } catch (error) {
+      throw new InternalServerErrorException("Se cagou ao deletar esse pet");
+    }
+    if(!deletedPet) throw new ForbiddenException("não posso deletar esse bixo sarnendo");
+    return deletedPet;
+  }
+
+
 }

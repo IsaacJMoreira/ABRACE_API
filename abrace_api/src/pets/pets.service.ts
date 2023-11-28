@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Pet } from './pet.model';
 import { Model } from 'mongoose';
+import { DefaultDeserializer } from 'v8';
 
 @Injectable()
 export class PetsService {
@@ -21,6 +22,9 @@ export class PetsService {
     sponsorships: [string],
     adoptionRequests: [string],
   ) {
+    const isTaken = await this.petModel.countDocuments({ name: name });
+    if (isTaken) return false;
+
     const newPet = new this.petModel({
       name,
       species,
@@ -37,27 +41,22 @@ export class PetsService {
     });
 
     const response = await newPet.save();
-    console.log(response);
-
-    return response._id as string;
+    return response as Pet | boolean;
   }
 
   async getAllPets() {
     const response = await this.petModel.find().exec();
-    if (response.length < 1) throw new NotFoundException('Não achei, porra!!!');
-    return response as Pet[];
+    if (response.length < 1) return false;
+    return response as Pet[] | boolean;
   }
 
   async getOne(id: string) {
     let response;
-    try {
-      response = await this.petModel.findById(id).exec();
-    } catch (error) {
-      throw new NotFoundException('Ish, deu merda!!!');
-    }
-    if (!response)
-      throw new NotFoundException('Não achei essa porra desse bixo');
-    return response as Pet;
+
+    response = await this.petModel.findById(id).exec();
+    if (!response) return false;
+
+    return response as Pet | boolean;
   }
 
   async updatePet(
@@ -75,30 +74,33 @@ export class PetsService {
     sponsorships: [string],
     adoptionRequests: [string],
   ) {
-    let response;
-    try {
-      response = await this.petModel.findOneAndUpdate(
-        { _id: id },
-        {
-          name,
-          species,
-          age,
-          accureteAge,
-          furColor,
-          furLength,
-          sex,
-          description,
-          imgURL,
-          imgALT,
-          sponsorships,
-          adoptionRequests,
-        },
-      );
-    } catch (error) {
-        console.log(error);
-        throw new NotFoundException("Deu bosta no update");
-    }
-    if (!response) throw new NotFoundException("Não achei porra nenhuma p fzr update");
-    return response
+    const [ IDsameNAME ] = await this.petModel.find({ name: name }, "_id");
+    console.log(name, IDsameNAME);
+    if (IDsameNAME && !(IDsameNAME._id == id))return false;
+    const response = await this.petModel.findOneAndUpdate(
+      { _id: id },
+      {
+        name,
+        species,
+        age,
+        accureteAge,
+        furColor,
+        furLength,
+        sex,
+        description,
+        imgURL,
+        imgALT,
+        sponsorships,
+        adoptionRequests,
+      },{new: true}
+    );
+
+    return response as Pet | boolean;
+  }
+
+  async delOneById(id: string){
+    const deletedPet = await this.petModel.deleteOne({_id: id});
+    if(!deletedPet.deletedCount) return false;
+    return deletedPet as object | boolean;
   }
 }
