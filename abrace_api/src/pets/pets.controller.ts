@@ -8,6 +8,7 @@ import {
   InternalServerErrorException,
   ForbiddenException,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { PetsService } from './pets.service';
 
@@ -73,7 +74,8 @@ export class PetsController {
         'Se cagou ao tentar pegar esse pet especifico ',
       );
     }
-    if (!onePet) return onePet;
+    if (!onePet) throw new NotFoundException("Não encontrei");
+    return onePet;
   }
 
   @Put(':id')
