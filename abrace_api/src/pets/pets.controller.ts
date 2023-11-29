@@ -53,7 +53,7 @@ export class PetsController {
         petAdoptionRequests,
       );
     } catch (error) {
-      throw new BadRequestException();
+      throw new InternalServerErrorException();
     }
     return newPet;
   }
@@ -125,7 +125,7 @@ export class PetsController {
     } catch (error) {
       throw new InternalServerErrorException();
     }
-    if (updatedPet === null) throw new NotFoundException();
+    if (!updatedPet) throw new NotFoundException();
     return updatedPet;
   }
   @Put('disable/:id')
@@ -155,7 +155,7 @@ export class PetsController {
     } catch (error) {
       throw new InternalServerErrorException();
     }
-    if (updatedPet == null) throw new NotFoundException();
+    if (!updatedPet) throw new NotFoundException();
     return updatedPet;
   }
 }
