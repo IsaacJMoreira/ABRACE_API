@@ -97,7 +97,7 @@ export class UsersController {
       throw new NotFoundException('Não consegui modificar esse fdp, pois não existe');
     return updatedUser;
   }
-  @Put('desable/:id')
+  @Put('disable/:id')
   async desableUserById(@Param('id') userID: string) {
     let desabledUser;
     try {
