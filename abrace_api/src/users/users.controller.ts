@@ -94,7 +94,7 @@ export class UsersController {
       );
     }
     if (!updatedUser)
-      throw new ForbiddenException('Não consegui modificar esse fdp');
+      throw new NotFoundException('Não consegui modificar esse fdp, pois não existe');
     return updatedUser;
   }
   @Put('desable/:id')
@@ -115,7 +115,25 @@ export class UsersController {
       );
     }
     if (!desabledUser)
-      throw new ForbiddenException('Não consegui desabilitar essa porra');
+      throw new NotFoundException('Não consegui desabilitar essa porra, pois não existe');
     return desabledUser;
+  }
+  @Put('reactivate/:id')
+  async reactivateAccount(@Param('id') oldUserID: string) {
+    let activatedUser;
+    try {
+      activatedUser = await this.usersService.putOne(
+        oldUserID,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        true,
+      );
+    } catch (error) {
+      throw new InternalServerErrorException("Se cagou ao tentar recuperar essa conta");
+    }
+    if(!activatedUser) throw new NotFoundException('Não posso reviver esse fdp, pois não existe');
+    return activatedUser;
   }
 }

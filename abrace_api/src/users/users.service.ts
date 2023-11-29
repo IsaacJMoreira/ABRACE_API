@@ -13,8 +13,11 @@ export class UsersService {
     pass: string,
     whatsApp: string,
   ) {
-    const isTaken = await this.userModel.countDocuments({ email: email });
-    if (isTaken) return false;
+    const isTaken = await this.userModel.findOne({ email: email });
+    if (isTaken) {
+      if (!isTaken.active) {return {recover: true, id: isTaken._id}}
+      return false
+    }
 
     const newUser = new this.userModel({
       name,
