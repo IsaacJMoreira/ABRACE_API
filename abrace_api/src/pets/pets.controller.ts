@@ -6,9 +6,8 @@ import {
   Param,
   Put,
   InternalServerErrorException,
-  ForbiddenException,
-  Delete,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { PetsService } from './pets.service';
 
@@ -21,10 +20,13 @@ export class PetsController {
     @Body('name') petName: string,
     @Body('species') petSpecies: string,
     @Body('age') petAge: number,
+    @Body('ageUnit') petAgeUnit: string,
     @Body('accurateAge') accurateAge: boolean,
     @Body('furColor') petFurColor: string,
     @Body('furLength') petFurLength: string,
     @Body('sex') petSex: string,
+    @Body('weight') petWeight: number,
+    @Body('weightUnit') petWeightUnit: string,
     @Body('description') petDescription: string,
     @Body('imgURL') petImgURL: string,
     @Body('imgALT') petImgALT: string,
@@ -37,10 +39,13 @@ export class PetsController {
         petName,
         petSpecies,
         petAge,
+        petAgeUnit,
         accurateAge,
         petFurColor,
         petFurLength,
         petSex,
+        petWeight,
+        petWeightUnit,
         petDescription,
         petImgURL,
         petImgALT,
@@ -48,19 +53,20 @@ export class PetsController {
         petAdoptionRequests,
       );
     } catch (error) {
-      throw new InternalServerErrorException(
-        'Se cagou ao tentar criar esse pet',
-      );
+      throw new BadRequestException();
     }
-
-    if (!newPet) throw new ForbiddenException('Já tem um pet com esse nome');
-
     return newPet;
   }
 
   @Get()
   async getAllPets() {
-    const response = await this.petsService.getAllPets();
+    let response;
+    try {
+      response = await this.petsService.getAllPets();
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+      if(!response) throw new NotFoundException();
     return response;
   }
 
@@ -70,11 +76,9 @@ export class PetsController {
     try {
       onePet = await this.petsService.getOne(id);
     } catch (error) {
-      throw new InternalServerErrorException(
-        'Se cagou ao tentar pegar esse pet especifico ',
-      );
+      throw new InternalServerErrorException();
     }
-    if (!onePet) throw new NotFoundException("Não encontrei");
+    if (!onePet) throw new NotFoundException();
     return onePet;
   }
 
@@ -84,10 +88,13 @@ export class PetsController {
     @Body('name') petName: string,
     @Body('species') petSpecies: string,
     @Body('age') petAge: number,
+    @Body('ageUnit') petAgeUnit: string,
     @Body('accurateAge') accurateAge: boolean,
     @Body('furColor') petFurColor: string,
     @Body('furLength') petFurLength: string,
     @Body('sex') petSex: string,
+    @Body('weight') petWeight: number,
+    @Body('weightUnit') petWeightUnit: string,
     @Body('description') petDescription: string,
     @Body('imgURL') petImgURL: string,
     @Body('imgALT') petImgALT: string,
@@ -102,10 +109,13 @@ export class PetsController {
         petName,
         petSpecies,
         petAge,
+        petAgeUnit,
         accurateAge,
         petFurColor,
         petFurLength,
         petSex,
+        petWeight,
+        petWeightUnit,
         petDescription,
         petImgURL,
         petImgALT,
@@ -113,25 +123,39 @@ export class PetsController {
         petAdoptionRequests,
       );
     } catch (error) {
-      throw new InternalServerErrorException(
-        'Deu bosta oa tentar fzr update nedde pet',
-      );
+      throw new InternalServerErrorException();
     }
-    if (!updatedPet)
-      throw new ForbiddenException('Já tem um pet com esse nome');
+    if (updatedPet === null) throw new NotFoundException();
     return updatedPet;
   }
+  @Put('disable/:id')
+  async desableOnePet(@Param('id') id: string) {
+    let updatedPet;
 
-  @Delete(':id')
-  async deletePetByID(@Param('id') petID: string) {
-    let deletedPet;
     try {
-      deletedPet = await this.petsService.delOneById(petID);
+      updatedPet = await this.petsService.updatePet(
+        id,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        false,
+      );
     } catch (error) {
-      throw new InternalServerErrorException('Se cagou ao deletar esse pet');
+      throw new InternalServerErrorException();
     }
-    if (!deletedPet)
-      throw new ForbiddenException('não posso deletar esse bixo sarnendo');
-    return deletedPet;
+    if (updatedPet == null) throw new NotFoundException();
+    return updatedPet;
   }
 }

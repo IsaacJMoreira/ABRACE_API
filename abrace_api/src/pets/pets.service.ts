@@ -11,27 +11,30 @@ export class PetsService {
     name: string,
     species: string,
     age: number,
+    ageUnit: string,
     accureteAge: boolean,
     furColor: string,
     furLength: string,
     sex: string,
+    weight: number,
+    weightUnit: string,
     description: string,
     imgURL: string,
     imgALT: string,
     sponsorships: [string],
     adoptionRequests: [string],
   ) {
-    const isTaken = await this.petModel.countDocuments({ name: name });
-    if (isTaken) return false;
-
     const newPet = new this.petModel({
       name,
       species,
       age,
+      ageUnit,
       accureteAge,
       furColor,
       furLength,
       sex,
+      weight,
+      weightUnit,
       description,
       imgURL,
       imgALT,
@@ -63,43 +66,43 @@ export class PetsService {
     name: string,
     species: string,
     age: number,
-    accureteAge: boolean,
+    ageUnit: string,
+    accurateAge: boolean,
     furColor: string,
     furLength: string,
     sex: string,
+    weight: number,
+    weightUnit: string,
     description: string,
     imgURL: string,
     imgALT: string,
     sponsorships: [string],
     adoptionRequests: [string],
+    active?: boolean,
   ) {
-    const [ IDsameNAME ] = await this.petModel.find({ name: name }, "_id");
-    console.log(name, IDsameNAME);
-    if (IDsameNAME && !(IDsameNAME._id == id))return false;
+    
     const response = await this.petModel.findOneAndUpdate(
       { _id: id },
       {
         name,
         species,
         age,
-        accureteAge,
+        ageUnit,
+        accurateAge,
         furColor,
         furLength,
         sex,
+        weight,
+        weightUnit,
         description,
+        active,
         imgURL,
         imgALT,
         sponsorships,
         adoptionRequests,
-      },{new: true}
+      },
+      { new: true },
     );
-
     return response as Pet;
-  }
-
-  async delOneById(id: string){
-    const deletedPet = await this.petModel.deleteOne({_id: id});
-    if(!deletedPet.deletedCount) return false;
-    return deletedPet as object;
   }
 }
