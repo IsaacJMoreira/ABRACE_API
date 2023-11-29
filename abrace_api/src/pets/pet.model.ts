@@ -18,7 +18,7 @@ export const PetSchema = new mongoose.Schema({
     imgALT: {type: String, min: 3, max: 30, required: false},//change to TRUE
     sponsorships: [{id:{type: String, max: 300}}],
     adoptionRequests: [{id:{type:String, max: 300}}]
-});
+}, {timestamps: true});
 
 
 export interface Pet extends mongoose.Document {

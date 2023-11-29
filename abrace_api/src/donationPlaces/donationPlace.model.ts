@@ -10,7 +10,7 @@ export const DonationPlaceSchema = new mongoose.Schema({
     openningTime: {type: String, required: true},
     closingTime: {type: String, required: true},
     googleMapsLink:{type: String, min: 3, max: 300, required: true}
-});
+}, {timestamps: true});
 
 export interface DonationPlace extends mongoose.Document{
     id: string,

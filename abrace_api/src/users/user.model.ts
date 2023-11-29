@@ -12,7 +12,7 @@ import * as mongoose from 'mongoose';
         sponsorshipIDs: [{id:{type: String, max: 300}}],
         donationIDs: [{id:{type: String, max: 300}}],
         active: {type: Boolean, default: true}
-    });
+    }, {timestamps: true});
 
     export interface User extends mongoose.Document{
         id: string,
