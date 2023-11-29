@@ -24,22 +24,20 @@ export class AdmsController {
     @Body('pass') admPass: string,
     @Body('credenctial') admCredential: string,
   ) {
-    let generatedID;
+    let newADM;
     try {
-      generatedID = await this.admService.createAdm(
+      newADM = await this.admService.createAdm(
         admName,
         admEmail,
         admPass,
         admCredential,
       );
     } catch (error) {
-      throw new InternalServerErrorException(
-        'Mongo DB se cagou ao criar esse adm',
-      );
+      throw new InternalServerErrorException();
     }
-    if (!generatedID)
-      throw new ForbiddenException('Já tem aguém com esse email, carai!!!');
-    return { ID: generatedID };
+    if (!newADM)
+      throw new ForbiddenException();
+    return newADM;
   }
 
   @Get()
@@ -49,12 +47,10 @@ export class AdmsController {
     try {
       allADMs = this.admService.getAdms();
     } catch (error) {
-      throw new InternalServerErrorException(
-        'Mongo DB se cagou ao pegar todos os adms',
-      );
+      throw new InternalServerErrorException();
     }
 
-    if (!allADMs) throw new NotFoundException('Num achei foi nada!');
+    if (!allADMs) throw new NotFoundException();
     return allADMs;
   }
 
@@ -65,13 +61,11 @@ export class AdmsController {
     try {
       specificADM = await this.admService.getADMByID(admID);
     } catch (error) {
-      throw new InternalServerErrorException(
-        'Mongo DB de cagou a tentar encontrar um adm especifico',
-      );
+      throw new InternalServerErrorException();
     }
 
     if (!specificADM)
-      throw new NotFoundException('Não achei esse adm ai q vc falou');
+      throw new NotFoundException();
 
     return specificADM;
   }
@@ -92,13 +86,12 @@ export class AdmsController {
         newPass,
       );
     } catch (error) {
-      throw new InternalServerErrorException(
-        'MongoDB se cagou ao tentar fzr esse update',
-      );
+      throw new InternalServerErrorException();
     }
-    if (response == 2)
-      throw new ForbiddenException('Já existe alguém com esse E-MAIL');
-    return response._id;
+    if (response == 1)
+      throw new ForbiddenException();
+    if(response == 2) throw new NotFoundException();
+    return response;
   }
 
   @Put('promote/:id')
@@ -113,29 +106,24 @@ export class AdmsController {
         newAdmCredential,
       );
     } catch (error) {
-      throw new InternalServerErrorException(
-        'Se cagou ao tentar mudar essa credencial',
-      );
+      throw new InternalServerErrorException();
     }
 
     if (!response)
-      throw new NotFoundException('Num encontrei ngm pra promover');
+      throw new NotFoundException();
 
     return response._id;
   }
 
-  @Delete(':id')
-  async deleteAdmByID(@Param('id') admID: string) {
-    let response;
+  @Put('disable/:id')
+  async desableADM(@Param('id') admID: string){
+    let disabledADM;
     try {
-      response = await this.admService.deleteById(admID);
+      disabledADM = await this.admService.disableADMbyID(admID);
     } catch (error) {
-      throw new InternalServerErrorException(
-        'mongoDB se cagou ao tentar deletar o ADM',
-      );
+      throw new InternalServerErrorException();
     }
-    if (response.deletedCount == 0)
-      throw new NotFoundException('Ninguém assim pra ser deletado!');
-    return response;
+    if(!disabledADM) throw new NotFoundException();
+    return disabledADM;
   }
 }

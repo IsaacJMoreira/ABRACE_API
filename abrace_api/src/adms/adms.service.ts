@@ -22,7 +22,7 @@ export class AdmService {
         pass,
         credential,
       }).save();
-      return response._id;
+      return response;
     }
 
     return false;
@@ -52,12 +52,10 @@ export class AdmService {
 
     let isItself = 0;
     alreadyExistes.forEach((element) => {
-      if (element._id == id) isItself = 1;
+      if (element?._id == id) isItself = 1;
     });
-    console.log('isItsenf', isItself);
-    console.log('alreadyExistes', alreadyExistes.length);
 
-    if (alreadyExistes.length > 0 && !(isItself == 1)) return 2;
+    if (alreadyExistes.length > 0 && !(isItself == 1)) return 1;
 
     const response = await this.admModel.findByIdAndUpdate(
       { _id: id },
@@ -70,7 +68,8 @@ export class AdmService {
         new: true,
       },
     );
-
+    console.log(typeof response, response);
+    if (response == null) return 2;
     return response;
   }
 
@@ -84,9 +83,13 @@ export class AdmService {
     return exists;
   }
 
-  async deleteById(id: string) {
-    const deleted = await this.admModel.deleteOne({ _id: id });
-    if (!deleted) return false;
-    return deleted;
+  async disableADMbyID(id: string) {
+    const disabledADM = await this.admModel.findByIdAndUpdate(
+      {_id: id},
+      { active: false },
+      { new: true }
+    );
+    if(!disabledADM) return false;
+    return disabledADM;
   }
 }
