@@ -8,7 +8,6 @@ import {
   NotFoundException,
   Param,
   Put,
-  Delete,
 } from '@nestjs/common';
 import { AdmService } from './adms.service';
 import { response } from 'express';
