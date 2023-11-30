@@ -16,7 +16,7 @@ export class AdmsController {
   constructor(private readonly admService: AdmService) {}
 
   @Post()
-  async add(
+  async addNewAdm(
     @Body('name') admName: string,
     @Body('email') admEmail: string,
     @Body('pass') admPass: string,
