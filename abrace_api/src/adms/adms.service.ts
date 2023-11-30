@@ -13,7 +13,7 @@ export class AdmService {
     pass: string,
     credential: string,
   ) {
-    const existes = await this.admModel.findOne({ email: email });
+    const existes = await this.admModel.countDocuments({ email: email });
 
     if (!existes) {
       const response = await new this.admModel({
