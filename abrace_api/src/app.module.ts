@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AdmsModule } from './adms/adms.module';
 import { UsersModule } from './users/users.module';
 import { DonationPlaceModule } from './donationPlaces/donationPlaces.module';
+import { EventsModule } from './events/events.module';
 require('dotenv/config');
 
 @Module({
@@ -13,6 +14,7 @@ require('dotenv/config');
     AdmsModule,
     UsersModule,
     DonationPlaceModule,
+    EventsModule
   ],
   controllers: [],
   providers: [],

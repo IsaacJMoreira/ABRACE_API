@@ -72,4 +72,62 @@ import {
         return OneDonationPlace;
     }
 
+    @Put(':id')
+    async updateOneDonationPlaceByID(
+        @Param('id') dpID: string,
+        @Body('name') dpName: string,
+        @Body('street') dpStreet: string,
+        @Body('number') dpNumber: string,
+        @Body('complement') dpComplement: string,
+        @Body('neighborhood') dpNeighborhood: string,
+        @Body('oppeningTime') dpOppeningTime: string,
+        @Body('closingTime') dpClosingTime: string,
+        @Body('googleMapsLink') dpGoogleMapsLink: string
+    ){
+        let updatedDonationPlace;
+        try {
+            updatedDonationPlace = await this.donationPlacesService.updateDonationPlaceByID(
+                dpID,
+                dpName,
+                dpStreet,
+                dpNumber,
+                dpComplement,
+                dpNeighborhood,
+                dpOppeningTime,
+                dpClosingTime,
+                dpGoogleMapsLink,
+                undefined
+                )
+        } catch (error) {
+            throw new InternalServerErrorException();
+        }
+        if (!updatedDonationPlace) throw new NotFoundException();
+        return updatedDonationPlace;
+    }
+
+    @Put('deactivate/:id')
+    async deactivateDonationPlace(
+        @Param('id') dpID: string
+    ){
+        let deactivatedDonationPlace
+        try {
+            deactivatedDonationPlace = await this.donationPlacesService.updateDonationPlaceByID(
+                dpID, 
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                false
+            )
+        } catch (error) {
+           throw new InternalServerErrorException(); 
+        }
+        if(!deactivatedDonationPlace) throw new NotFoundException();
+        return deactivatedDonationPlace;
+    }
+
   }
