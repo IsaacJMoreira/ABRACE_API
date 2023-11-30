@@ -10,7 +10,6 @@ import {
   Put,
 } from '@nestjs/common';
 import { AdmService } from './adms.service';
-import { response } from 'express';
 
 @Controller('adms')
 export class AdmsController {
