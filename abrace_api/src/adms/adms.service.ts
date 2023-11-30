@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {  Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Adm } from './adm.model';
 import { Model } from 'mongoose';

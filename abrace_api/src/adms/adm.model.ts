@@ -15,5 +15,6 @@ export interface Adm extends mongoose.Document{
     name: string,
     email: string,
     pass: string,
-    credential: string
+    credential: string,
+    active: boolean,
 }
