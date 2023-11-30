@@ -13,9 +13,9 @@ export class AdmService {
     pass: string,
     credential: string,
   ) {
-    const existes = await this.admModel.countDocuments({ email: email });
+    const exists = await this.admModel.countDocuments({ email: email });
 
-    if (!existes) {
+    if (!exists) {
       const response = await new this.admModel({
         name,
         email,
