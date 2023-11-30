@@ -33,8 +33,7 @@ export class AdmsController {
     } catch (error) {
       throw new InternalServerErrorException();
     }
-    if (!newADM)
-      throw new ForbiddenException();
+    
     return newADM;
   }
 
