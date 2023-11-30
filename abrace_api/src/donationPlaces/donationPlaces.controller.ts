@@ -39,7 +39,6 @@ import {
                 dpGoogleMapsLink
             );
         } catch (error) {
-            console.log(error)
             throw new InternalServerErrorException();
         }
         if(!newDonationPlace) throw new ForbiddenException();

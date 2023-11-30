@@ -33,12 +33,10 @@ export class UsersController {
         userWhatsApp,
       );
     } catch (error) {
-      throw new InternalServerErrorException('se cagou ao criar usuário');
+      throw new InternalServerErrorException();
     }
     if (!newUser)
-      throw new ForbiddenException(
-        'Outro fdp com esse email ja está cadastrado',
-      );
+      throw new ForbiddenException();
     return newUser;
   }
 
@@ -48,11 +46,9 @@ export class UsersController {
     try {
       allUsers = await this.usersService.getAll();
     } catch (error) {
-      throw new InternalServerErrorException(
-        'Se cagou pegando a lista de usuários',
-      );
+      throw new InternalServerErrorException();
     }
-    if (!allUsers) throw new NotFoundException('gif do John Travolta');
+    if (!allUsers) throw new NotFoundException();
     return allUsers;
   }
 
@@ -62,11 +58,9 @@ export class UsersController {
     try {
       oneUser = await this.usersService.getOne(userID);
     } catch (error) {
-      throw new InternalServerErrorException(
-        'Se cagou ao tentar pegar esse usuários',
-      );
+      throw new InternalServerErrorException();
     }
-    if (!oneUser) throw new NotFoundException('Num tem nenhum FDP com essa ID');
+    if (!oneUser) throw new NotFoundException();
     return oneUser;
   }
 
@@ -89,12 +83,10 @@ export class UsersController {
         undefined,
       );
     } catch (error) {
-      throw new InternalServerErrorException(
-        'se cagou ao tentar mudar esse usuário',
-      );
+      throw new InternalServerErrorException();
     }
     if (!updatedUser)
-      throw new NotFoundException('Não consegui modificar esse fdp, pois não existe');
+      throw new NotFoundException();
     return updatedUser;
   }
   @Put('disable/:id')
@@ -110,12 +102,10 @@ export class UsersController {
         false,
       );
     } catch (error) {
-      throw new InternalServerErrorException(
-        'Se cagou ao desabilitar esse usuário',
-      );
+      throw new InternalServerErrorException();
     }
     if (!desabledUser)
-      throw new NotFoundException('Não consegui desabilitar essa porra, pois não existe');
+      throw new NotFoundException();
     return desabledUser;
   }
   @Put('reactivate/:id')
@@ -131,9 +121,9 @@ export class UsersController {
         true,
       );
     } catch (error) {
-      throw new InternalServerErrorException("Se cagou ao tentar recuperar essa conta");
+      throw new InternalServerErrorException();
     }
-    if(!activatedUser) throw new NotFoundException('Não posso reviver esse fdp, pois não existe');
+    if(!activatedUser) throw new NotFoundException();
     return activatedUser;
   }
 }
