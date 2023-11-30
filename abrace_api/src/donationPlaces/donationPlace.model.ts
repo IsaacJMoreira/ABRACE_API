@@ -5,10 +5,11 @@ export const DonationPlaceSchema = new mongoose.Schema({
     name: {type: String, min: 3, max: 30, required: true},
     street:{type: String, min: 3, max: 30, required: true},
     number: {type: String, min: 1, max: 10, required: true},
-    complement: {type: String, min:1, max: 30, required: false},
+    complement: {type: String, min:1, max: 30},
     neighborhood: {type: String, min: 1, max: 30, required: true},
-    openningTime: {type: String, required: true},
+    oppeningTime: {type: String, required: true},
     closingTime: {type: String, required: true},
+    active: {type: Boolean, default: true},
     googleMapsLink:{type: String, min: 3, max: 300, required: true}
 }, {timestamps: true});
 
@@ -19,7 +20,8 @@ export interface DonationPlace extends mongoose.Document{
     number: string,
     complement: string,
     neighborhood: string,
-    openningTime: string,
+    oppeningTime: string,
     closingTime: string,
+    active: boolean,
     googleMapsLink: string
 }
