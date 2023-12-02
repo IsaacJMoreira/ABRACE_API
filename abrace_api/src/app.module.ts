@@ -5,7 +5,7 @@ import { AdmsModule } from './adms/adms.module';
 import { UsersModule } from './users/users.module';
 import { DonationPlaceModule } from './donationPlaces/donationPlaces.module';
 import { EventsModule } from './events/events.module';
-require('dotenv/config');
+import 'dotenv/config';
 
 @Module({
   imports: [

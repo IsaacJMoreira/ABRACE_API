@@ -6,8 +6,7 @@ import {
   Param,
   Put,
   InternalServerErrorException,
-  NotFoundException,
-  BadRequestException,
+  NotFoundException
 } from '@nestjs/common';
 import { PetsService } from './pets.service';
 
@@ -34,6 +33,7 @@ export class PetsController {
     @Body('adoptionRequests') petAdoptionRequests: [string],
   ) {
     let newPet;
+
     try {
       newPet = await this.petsService.createPet(
         petName,
@@ -55,11 +55,13 @@ export class PetsController {
     } catch (error) {
       throw new InternalServerErrorException();
     }
+   
     return newPet;
   }
 
   @Get()
   async getAllPets() {
+   
     let response;
     try {
       response = await this.petsService.getAllPets();
