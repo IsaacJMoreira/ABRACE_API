@@ -27,9 +27,8 @@ export interface Pet extends mongoose.Document {
   species: string;
   age: number;
   ageUnit: string,
-  accureteAge: boolean;
+  accurateAge: boolean;
   furColor: string;
-  furType: string;
   furLength: string;
   sex: string;
   weight: number,
