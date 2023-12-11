@@ -5,6 +5,7 @@ import { AdmsModule } from './adms/adms.module';
 import { UsersModule } from './users/users.module';
 import { DonationPlaceModule } from './donationPlaces/donationPlaces.module';
 import { EventsModule } from './events/events.module';
+import { AdoptionRequestModule } from './adoptionRequests/adoptionRequests.module';
 import 'dotenv/config';
 
 @Module({
@@ -14,7 +15,8 @@ import 'dotenv/config';
     AdmsModule,
     UsersModule,
     DonationPlaceModule,
-    EventsModule
+    EventsModule,
+    AdoptionRequestModule,
   ],
   controllers: [],
   providers: [],
