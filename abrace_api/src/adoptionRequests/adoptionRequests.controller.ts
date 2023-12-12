@@ -31,6 +31,7 @@ import {
                 petID,
             )
             if(newAdoptionRequest == -1) throw new Error();
+            if(newAdoptionRequest == 4) throw new Error('FATAL: lonst data sync')
         } catch (error) {
             throw new InternalServerErrorException();
         }

@@ -3,9 +3,9 @@ import * as mongoose from 'mongoose'
 export const PetSchema = new mongoose.Schema({
     id:{type: String},
     name: {type: String, min: 3, max: 30, required: true},
-    species: {type: String, enum:["gato","cachorro"], required: true},
+    species: {type: String, enum:["gato","cão"], required: true},
     age: {type: Number, min: 1, max: 100, required: true},
-    ageUnit: {type: String, enum:["M", "A"], default: "A"},
+    ageUnit: {type: String, enum:["M", "A", "D"], default: "A"},
     accurateAge: {type: Boolean, default: true},
     furColor: {type: String, min: 3, max: 30, required: true},
     furLength: {type: String, min: 1, max: 30, required: true},

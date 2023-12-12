@@ -26,6 +26,9 @@ export class AdoptionRequestsService {
       userID,
       petID,
     }).save();
+    const updatedPet = await this.petModel.findByIdAndUpdate(petID,{$push: {adoptionRequests: newAdoptionRequest._id}});
+    const updatedUser = await this.userModel.findByIdAndUpdate(userID,{$push: {adoptionAplicationIDs: newAdoptionRequest._id}});
+    if(!updatedPet || !updatedUser) return 4;
     if (!newAdoptionRequest) return -1; //did not create anything
     return newAdoptionRequest;
   }
