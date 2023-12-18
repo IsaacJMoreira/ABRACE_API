@@ -40,7 +40,7 @@ export class EventService {
   }
 
   async getAllEvents() {
-    const allEvents = await this.eventModel.find();
+    const allEvents = await this.eventModel.find({active: true}).sort({createdAt: -1});
     if (allEvents.length < 1) return false;
     return allEvents;
   }

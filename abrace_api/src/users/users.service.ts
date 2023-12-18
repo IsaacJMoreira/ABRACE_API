@@ -31,7 +31,7 @@ export class UsersService {
   }
 
   async getAll() {
-    const response = await this.userModel.find().exec();
+    const response = await this.userModel.find({active: true}).sort({createdAt: -1});
     if (response.length < 1) return false;
     return response as User[];
   }

@@ -29,7 +29,7 @@ export class AdmService {
   }
 
   async getAdms() {
-    const response = await this.admModel.find();
+    const response = await this.admModel.find({active: true});
 
     if (!response) return false;
     return response;

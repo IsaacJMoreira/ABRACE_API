@@ -39,7 +39,7 @@ export class DonationPlacesService {
   }
 
   async getAllDonationPlaces() {
-    const allDonationPlaces = await this.donationPlaceModel.find();
+    const allDonationPlaces = await this.donationPlaceModel.find({active: true}).sort({createdAt: -1});
     if (allDonationPlaces.length < 1) return false;
     return allDonationPlaces;
   }

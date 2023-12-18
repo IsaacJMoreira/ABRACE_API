@@ -47,7 +47,7 @@ export class PetsService {
   }
 
   async getAllPets() {
-    const response = await this.petModel.find().sort({createdAt: -1});
+    const response = await this.petModel.find({active: true}).sort({createdAt: -1});
     if (response.length < 1) return false;
     return response as Pet[];
   }
