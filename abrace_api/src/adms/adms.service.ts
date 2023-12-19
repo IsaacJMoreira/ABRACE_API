@@ -37,7 +37,7 @@ export class AdmService {
 
   async getADMByID(id: string) {
     const response = await this.admModel.findById(id);
-    console.log(response);
+    
     if (!response) return false;
     return response;
   }
