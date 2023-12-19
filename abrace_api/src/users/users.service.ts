@@ -36,6 +36,18 @@ export class UsersService {
     return response as User[];
   }
 
+  async searchUserByQuery(searchTerm?: string){
+
+    const response = await this.userModel.find({
+      $or:[
+        {"name": {$regex: `${searchTerm}`, $options: 'i'}},
+        {"email": {$regex: `${searchTerm}`, $options: 'i'}}
+      ]
+    }).sort({createdAt: -1});
+    if (response.length < 1 ) return [];
+    return response as User[];
+  }
+
   async getOne(id: string) {
     const oneUser = await this.userModel.findById(id);
     if (!oneUser) return false;

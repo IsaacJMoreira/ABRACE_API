@@ -9,6 +9,7 @@ import {
   ForbiddenException,
   Delete,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 
@@ -48,8 +49,22 @@ export class UsersController {
     } catch (error) {
       throw new InternalServerErrorException();
     }
-    if (!allUsers) throw new NotFoundException();
     return allUsers;
+  }
+
+  @Get('/query')
+  async searchAllUsersByQuery(
+    @Query('searchTerm') searchTerm: string
+  ){
+    const searchString = searchTerm;
+    let result;
+    try {
+      result = await this.usersService.searchUserByQuery(searchString);
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+
+    return result;
   }
 
   @Get(':id')
