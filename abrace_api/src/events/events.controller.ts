@@ -108,7 +108,7 @@ import {
         return updatedEvent;
     }
 
-    @Put('deactivate/:id')
+    @Put('disable/:id')
     async deactivateEventByID(
         @Param('id') eventID: string
     ){

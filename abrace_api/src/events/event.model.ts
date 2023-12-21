@@ -9,8 +9,8 @@ export const EventSchema = new mongoose.Schema({
     duration: {type: String, required: true},
     place: {type: String, min: 3, max: 50, required: true},
     linkToEventPage: {type: String, min:3, max: 300},
-    imgURL: {type: String, min: 3, max: 300, required: true},
-    imgALT: {type: String, min: 3, max: 30, required: true},
+    imgURL: {type: String, min: 3, max: 300, required: false},
+    imgALT: {type: String, min: 3, max: 30, required: false},
     description: {type: String, min: 30, max: 500, required: true},
     active: {type: Boolean, default: true}
 },{timestamps: true});
