@@ -68,7 +68,6 @@ export class AdmService {
         new: true,
       },
     );
-    console.log(typeof response, response);
     if (response == null) return 2;
     return response;
   }
